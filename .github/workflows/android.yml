@@ -12,15 +12,19 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
           pip install --upgrade pip
           pip install buildozer cython==0.29.33 kivy
 
       - name: Build with Buildozer
         run: |
-          yes | buildozer init
-          # تعديل ملف الإعدادات ليكون متوافقاً مع أندرويد
-          sed -i 's/package.domain = org.test/package.domain = org.schoolapp/' buildozer.spec
+          # سنستخدم ملف الإعدادات الجاهز الذي سننشئه في الخطوة التالية
           buildozer android debug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: package
+          path: bin/*.apk
           
