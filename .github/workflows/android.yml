@@ -1,12 +1,26 @@
 name: Build Android APK
 on: [push]
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Build with Buildozer
-        uses: ArtemSerebrennkov/buildozer-action@v1
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          workdir: .
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install buildozer cython==0.29.33 kivy
+
+      - name: Build with Buildozer
+        run: |
+          yes | buildozer init
+          # تعديل ملف الإعدادات ليكون متوافقاً مع أندرويد
+          sed -i 's/package.domain = org.test/package.domain = org.schoolapp/' buildozer.spec
+          buildozer android debug
           
