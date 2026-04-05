@@ -19,12 +19,11 @@ jobs:
 
       - name: Build with Buildozer
         run: |
-          # سنستخدم ملف الإعدادات الجاهز الذي سننشئه في الخطوة التالية
           buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
-          name: package
+          name: School-App-APK
           path: bin/*.apk
           
